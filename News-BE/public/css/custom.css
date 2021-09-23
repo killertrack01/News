@@ -1,0 +1,19 @@
+.dt-buttons.btn-group.flex-wrap button {
+    background: #dedede;
+    border-radius: 0px;
+    border: 0;
+    color: #000;
+    margin: 2px;
+}
+
+.dataTables_filter {
+    text-align: end;
+    margin-top: -15px;
+}
+
+.pass_field {
+    word-break: break-all;
+}
+.nav-link.active {
+    background-color: #04AA6D !important;
+}

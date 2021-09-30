@@ -5,15 +5,64 @@
     color: #000;
     margin: 2px;
 }
-
 .dataTables_filter {
     text-align: end;
     margin-top: -15px;
 }
-
 .pass_field {
     word-break: break-all;
 }
-.nav-link.active {
-    background-color: #04AA6D !important;
+span.brand-text.font-weight-light {
+    color: #1fab72;
+    font-size: 27px;
+    text-shadow: 0 10px 20px rgba(0,0,0,.19),0 6px 6px rgba(0,0,0,.23)!important;
+    text-transform: uppercase;
+}
+.brand-link .brand-image {
+    margin-top: 3px;
+}
+.card-primary.card-outline{
+    border-top: 3px solid #04AA6D;
+}
+.btn-green-basket, .btn-green-basket:hover, .nav-link.active  {
+    /* background: #04AA6D!important; */
+    background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%)!important;
+    color: #fff;
+}
+.bg-success {
+    /* background-color: #28a745!important; */
+    background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%)!important;
+}
+.card-header {
+    background-color: #f5f5f5;
+    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    border-bottom-color: #b3b3b3;
+}
+.card-tools button {
+    color: #343a40!important;
+}
+h3.card-title {
+    text-shadow: 0 1px 1px rgb(255 255 255 / 75%);
+    vertical-align: middle;
+    color: #343a40;
+}
+
+button.btn.btn-default, ul.pagination.pagination-sm li a {
+    background-color: #f5f5f5;
+    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    border-bottom-color: #b3b3b3;
+}
+.custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: #04AA6D;
+    background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%)!important;
+    box-shadow: none;
+}
+thead {
+    background-color: #e1e2f4;
+    /*background-color: #e0f1e5;*/
 }

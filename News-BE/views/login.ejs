@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base href="http://localhost:3000/">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Admin Dashboard</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <%-include('partials/css')%>
+
+</head>
+
+<body class="hold-transition login-page">
+
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="/img/green-loading.gif" alt="AdminLTELogo" height="170" width="170">
+    </div>
+
+    <%-include(main)%>
+
+    <!-- ./wrapper -->
+    <%-include('partials/script')%>   
+</body>
+
+</html>

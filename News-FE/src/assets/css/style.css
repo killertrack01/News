@@ -417,7 +417,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
   width: 100%;
   z-index: 9999;
   position: relative;
-  padding: 55px 0 40px;
+  padding: 15px 0 15px;
 }
 .main_header_area .header_menu .navbar {
   padding: 0;

@@ -1,0 +1,284 @@
+<script>
+    class categoryValidate {
+
+        /** Generating alias **/
+        generateAlias(str) {
+            //change string to lower case
+            str = str.toLowerCase();
+            //begin replace vietnamese characters with alphabet characters
+            str = str.replace(/á|à|ả|ã|ạ|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/g, "a");
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+            str = str.replace(/đ/g, "d");
+            //end replace vietnamese characters with alphabet characters
+            //remove special characters
+            str = str.replace(/[^0-9a-z ]/g, " ");
+            //remove space form the begining and end of string
+            str = str.trim();
+            //remove contiguous white spaces
+            str = str.replace(/ + /g, " ");
+            //replace white space with "-"
+            str = str.replace(/ /g, "-");
+            return str;
+        }
+        /** CREATE NEW CATEGORY **/
+        add() {
+            var category_name, alias, description, data = [];
+            // --Get value from form input
+            category_name = $('#category_name').val();
+            alias = $('#alias').val();
+            description = $('#description').val();
+            
+            data = {
+                category_name,
+                alias,
+                description
+            };
+            // --Call Ajax  
+            $.ajax({
+                // Url
+                url: `admin/` + `<%=moduleLink%>` + `/add`,
+                type: 'POST',
+                data: data,
+                success: function (rs) {
+                    if (rs.kq == 1) {
+                        /** Using toastr for pop up success **/ 
+                        toastr["success"]("Create new category", "success");
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                        // --Setting how toastr will pop up
+                        toastrOption(false,false,"toast-top-right","300","1000","5000");
+                    }else{
+                        /** Using toastr for pop up fail **/ 
+                        toastr["error"]("Fail: "+rs.err);
+                        // --Setting how toastr will pop up
+                        toastrOption(false,false,"toast-top-right","300","1000","5000");
+                    }
+                },
+                error: function (err) {
+                    /** Send Ajax fail  **/ 
+                        alert(err);
+                }
+            })
+
+        }
+        /** EDIT CATEGORY **/
+        // --Get data from db and set data value into the input form
+        getCate(id) {
+            $.ajax({
+                url: `admin/` + `<%=moduleLink%>` + `/category-get/` + id,
+                type: 'GET',
+                success: function (rs) {
+                    $('#category_name-edit').val(rs.data.category_name);
+                    $('#alias-edit').val(rs.data.alias);
+                    $('#description-edit').val(rs.data.description);
+                },
+                error: function (err) {
+                    if (err.kq == 0) {
+                        alert(err);
+                    }
+                }
+            })
+        }
+        // --Process to update category
+        update() {
+                var id, category_name, alias, description, data = [];
+
+                id = $('#id_edit').val();
+                category_name = $('#category_name-edit').val();
+                alias = $('#alias-edit').val();
+                description = $('#description-edit').val();
+                
+                data = {
+                    id,
+                    category_name, 
+                    alias,
+                    description
+                };
+                // ---Calling Ajax
+                $.ajax({
+                    url: `admin/` + `<%=moduleLink%>` + `/edit`,
+                    type: 'POST',
+                    data: data,
+                    success: function(rs) {
+                        if (rs.kq == 1) {
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1000);
+                             /** Using toastr for pop up success **/ 
+                            toastr["success"]("update", "success");
+                            // --Setting how toastr will pop up
+                            toastrOption(false,false,"toast-top-right","300","1000","5000");
+                            setTimeout(function () {
+                                $('#load').hide();
+                            }, 1000);
+                        } else {
+                            /** Using toastr for pop up fail **/ 
+                            toastr["error"]("Update category", "Fail:"+rs.err);
+                            // --Setting how toastr will pop up
+                            toastrOption(false,false,"toast-top-right","300","1000","5000");
+                        }
+                    }
+                })
+            }
+        /** DELETE CATEGORY **/
+        trash(id, moduleLink = '') {
+                if (id == '') {
+                    alert('Record is not existed !');
+                } else {
+                    $.ajax({
+                        url: `admin/` + `<%=moduleLink%>` + `/category-trash`,
+                        type: 'POST',
+                        data: {
+                            id
+                        },
+                        beforeSend: function() {
+                            $('#load').show();
+                            setTimeout(function() {
+                                $('#load').show();
+                            }, 1000);
+                        },
+                        success: function(results) {
+                            if (results.kq == 1) {
+                            /** Using toastr for pop up success **/ 
+                            toastr["success"]("Delete", "success");
+                            // --Setting how toastr will pop up
+                            toastrOption(false,false,"toast-top-right","300","1000","5000");
+                                setTimeout(function() {
+                                    $('#load').hide();
+                                }, 1000);
+                            } else {
+                                /** Using toastr for pop up fail **/ 
+                            toastr["error"]("Fail:"+results.err);
+                            // --Setting how toastr will pop up
+                            toastrOption(false,false,"toast-top-right","300","1000","5000");
+                            }
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1000);
+                        }
+                    });
+                    return false;
+                }
+            }
+       
+       /** VALIDATE CATEGORY FORM**/
+        validateForm(form) {
+
+            $(form).validate({
+                errorElement: "small",
+                focusInvalid: true,
+                highlight: function (element, errorClass, validClass) {
+                    $(element).fadeOut(function () {
+                        $(element).fadeIn();
+                    });
+                    $(element).addClass('is-invalid').removeClass('is-valid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-valid').removeClass('is-invalid');
+                },
+                rules: {
+                    category_name: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 50
+                    },
+                    description: {
+                        maxlength: 120
+                    }
+                },
+                messages: {
+                    category_name: {
+                        required: "Category name is required !",
+                        minlength: jQuery.validator.format("At least {0} characters required!"),
+                        maxlength: jQuery.validator.format("Max length {0} characters required!")
+                    },
+                    description: {
+                        maxlength: jQuery.validator.format("Max length {0} characters required!")
+                    },
+                },
+                    submitHandler: function() {
+                        if (form==formCreate) {
+                            addCate();
+                        }
+                        if (form==formEdit) {
+                            editCate();
+                        }
+                    }
+                })
+            }
+    }
+    /** Toastr option function**/
+   function toastrOption(closebutton,progressbar,positionclass,showduration,hideduration,timeout){
+            toastr.options = {
+                "closeButton": closebutton, // true || false
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": progressbar, // true || false
+                "positionClass": positionclass, // exp: "toast-top-right"
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": showduration, // exp: "300"
+                "hideDuration": hideduration, // exp: "1000"
+                "timeOut": timeout, // exp:"5000"
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+                }
+        }
+   
+</script>
+<script>
+    /** USING CREATE, UPDATE, DELETE AND AUTO GENERATE ALIAS FUNCTION **/
+    var obj = new categoryValidate;
+    const formCreate = document.querySelector('#addCate');
+    obj.validateForm(formCreate);
+
+    // Validate Edit Form
+    const formEdit = document.querySelector('#editCate');
+    obj.validateForm(formEdit);
+
+    $(document).ready(function () {
+        // --Generate alias for create category
+        document.getElementById('category_name').oninput = function () {
+            var str = $('#category_name').val();
+            $('#alias').val(obj.generateAlias(str));
+        }
+        // --Generate alias for edit category
+        document.getElementById('category_name-edit').oninput = function () {
+            var str = $('#category_name-edit').val();
+            $('#alias-edit').val(obj.generateAlias(str));
+        }
+
+    });
+
+    // --Create category
+    function addCate(){
+        obj.add();
+    }
+    // --Insert value category for update
+    function getCate(id) {
+        $('#id_edit').val(id);
+        obj.getCate(id);
+    }
+    // --Update category
+    function editCate() {
+        obj.update();
+    }
+    // --Insert value to id_trash
+    function deleteCate(id) {
+        $('#id_trash').val(id);
+    }
+    // --Delete category
+    function putToTrash() {
+        var id = $('#id_trash').val();
+        $('#delete_' + id).remove();
+        obj.trash(id, '<%=moduleLink%>');
+    }
+</script>

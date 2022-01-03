@@ -31,17 +31,21 @@ router.get('/index(/:pageNum)?', async(req, res) => {
         str += ' <li class="page-item"><a class="page-link text-dark" href="admin/' + moduleLink + '/index/' + index + '">' + index + '</a></li>'
     }
 
+    // -- use for select main category title 
+    var select_data = await CATEGORYMODEL.find({trash: false });
 
     // Form array 
     // --Array for Category form create
     const arrForm = [
-        { tag: 'input'   , type: 'text'  , name: 'category_name' , id: 'category_name' , data: []         , row: 0, placeholder: 'Enter category title...', required: true , disabled: false, col: 12 },
+        { tag: 'input'   , type: 'text'  , name: 'category_name' ,  id: 'category_name' ,  data: []         , row: 0, placeholder: 'Enter category title...', required: true , disabled: false, col: 12 },
+        { tag: 'select'  , type: 'select', name: 'parent_category', id: 'parent_category', data: select_data, row: 0, placeholder: ''                       , required: false, disabled: false, col: 12 },
         { tag: 'input'   , type: 'text'  , name: 'alias'          , id: 'alias'          , data: []         , row: 0, placeholder: 'Alias will be generated', required: false, disabled: true , col: 12 },
         { tag: 'textarea', type: ''      , name: 'description'    , id: 'description'    , data: []         , row: 5, placeholder: 'Enter Description...'   , required: false, disabled: false, col: 12 },
     ];
     // --Array for Category form edit
     const arrFormEdit = [
         { tag: 'input'   , type: 'text'  , name: 'category_name' , id: 'category_name-edit' , data: []         , row: 0, placeholder: 'Enter category title...', required: true , disabled: false, col: 12 },
+        { tag: 'select'  , type: 'select', name: 'parent_category', id: 'parent_category-edit', data: select_data, row: 0, placeholder: ''                       , required: false, disabled: false, col: 12 },
         { tag: 'input'   , type: 'text'  , name: 'alias'          , id: 'alias-edit'          , data: []         , row: 0, placeholder: 'Alias will be generated', required: false, disabled: true , col: 12 },
         { tag: 'textarea', type: ''      , name: 'description'    , id: 'description-edit'    , data: []         , row: 5, placeholder: 'Enter Description...'   , required: false, disabled: false, col: 12 },
     ];
